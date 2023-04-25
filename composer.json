@@ -1,0 +1,29 @@
+{
+  "name": "team-acaisia/php-bytearray",
+  "description": "A PHP class to hold an array of bytes",
+  "homepage": "https://github.com/team-acaisia/php-bytearray",
+  "license": "MIT",
+  "require": {
+    "php": "^8.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Acaisia\\ByteArray\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Acaisia\\ByteArray\\Tests\\": "tests"
+    }
+  },
+  "authors": [
+    {
+      "name": "Rob Quist",
+      "email": "support@acaisia.com",
+      "homepage": "https://acaisia.com/"
+    }
+  ]
+}
