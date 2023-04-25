@@ -11,7 +11,7 @@ use Acaisia\ByteArray\Exception\InvalidByteException;
  */
 class ByteArray implements \Stringable, \Countable //@todo might implement ArrayAccess or Traversable
 {
-    private $array = [];
+    private array $array = [];
 
     private function __construct()
     {
@@ -19,8 +19,8 @@ class ByteArray implements \Stringable, \Countable //@todo might implement Array
     }
 
     /**
-     * Returns a PHP native array with bytes. Internally, these are integers, but they will always be >=0 and <=254
-     * @return byte[]
+     * Returns a PHP native array with bytes. Internally, these are integers, but they will always be >=0 and <=255
+     * @return int[]
      */
     public function toArray(): array
     {
