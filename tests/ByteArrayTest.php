@@ -119,4 +119,42 @@ class ByteArrayTest extends AbstractTestCase
             [ByteArray::fromString('🚀'), 4],
         ];
     }
+
+    public function testIterator(): void
+    {
+        $expected = ['f0', '9f', '9a', '80'];
+
+        $i = 0;
+        foreach (ByteArray::fromString('🚀') as $byte) {
+            $this->assertSame($expected[$i++], dechex($byte));
+        }
+
+        $array = ByteArray::fromString('🚀🐸');
+        $this->assertSame(0, $array->key());
+        $this->assertTrue($array->valid());
+        $this->assertSame(240, $array->current()); // First byte
+        $array->next();
+        $this->assertTrue($array->valid());
+        $this->assertSame(159, $array->current()); // Second byte
+        for ($i = 0; $i < 6; $i++) { // Iterate the next 6 bytes
+            $array->next();
+            $this->assertTrue($array->valid());
+        }
+
+        $array->next(); // Now we should be out of range of the array
+        $this->assertFalse($array->valid());
+        $this->assertSame(8, $array->key());
+
+        // But we can keep iterating
+        $array->next();
+        $this->assertFalse($array->valid());
+        $this->assertSame(9, $array->key());
+
+        // And rewind
+        $array->rewind();
+        $this->assertSame(0, $array->key());
+        $this->assertTrue($array->valid());
+        $this->assertSame(240, $array->current()); // First byte
+    }
+
 }

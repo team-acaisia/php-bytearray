@@ -9,13 +9,16 @@ use Acaisia\ByteArray\Exception\InvalidByteException;
 /**
  * A class to hold an array of bytes
  */
-class ByteArray implements \Stringable, \Countable //@todo might implement ArrayAccess or Traversable
+class ByteArray implements \Stringable, \Countable, \Iterator
 {
+    private int $position = 0;
+
     private array $array = [];
 
     private function __construct()
     {
         // Private constructor
+        $this->position = 0;
     }
 
     /**
@@ -93,5 +96,26 @@ class ByteArray implements \Stringable, \Countable //@todo might implement Array
     public function count(): int
     {
         return count($this->array);
+    }
+
+    // Iterator implementation
+    public function rewind(): void {
+        $this->position = 0;
+    }
+
+    public function current(): int {
+        return $this->array[$this->position];
+    }
+
+    public function key(): int {
+        return $this->position;
+    }
+
+    public function next(): void {
+        ++$this->position;
+    }
+
+    public function valid(): bool {
+        return isset($this->array[$this->position]);
     }
 }
