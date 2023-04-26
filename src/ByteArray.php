@@ -44,6 +44,36 @@ class ByteArray implements \Stringable, \Countable, \Iterator
         return $self;
     }
 
+    public function startsWith(int|string|ByteArray $startsWith): bool
+    {
+        // If its an int we just check the first one
+        if (is_int($startsWith)) {
+            if ($this->count() == 0) {
+                return false;
+            }
+            return $this->array[0] == $startsWith;
+        }
+
+        // If its a string, we cast to ByteArray
+        if (is_string($startsWith)) {
+            return $this->startsWith(self::fromString($startsWith));
+        }
+
+        $startsWithLength = $startsWith->count();
+        if ($startsWithLength == 0) {
+            return true; // Well, technically, each array starts with an empty array.. Maybe throw a warning?
+        }
+
+        if ($startsWithLength > $this->count()) {
+            // If the given is longer than our own, we bail out
+            return false;
+        }
+
+        // If not we cut out the same length array
+        $cut = array_slice($this->array, 0, $startsWithLength);
+        return $cut == $startsWith->toArray(); // and return if its the same or not
+    }
+
     public function append(ByteArray $array): self
     {
         foreach ($array->toArray() as $value) {

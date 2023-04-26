@@ -157,4 +157,33 @@ class ByteArrayTest extends AbstractTestCase
         $this->assertSame(240, $array->current()); // First byte
     }
 
+    /**
+     * @dataProvider provideStartsWith
+     */
+    public function testStartsWith(ByteArray $given, $check, bool $expected): void
+    {
+        $this->assertSame($expected, $given->startsWith($check));
+    }
+
+    public static function provideStartsWith(): array
+    {
+        return [
+            [ByteArray::fromArray([]), ByteArray::fromArray([]), true],
+            [ByteArray::fromArray([]), '', true],
+            [ByteArray::fromArray([]), 0, false],
+            [ByteArray::fromArray([0]), 0, true],
+            [ByteArray::fromArray([0, 1, 2, 3]), 0, true],
+
+            [ByteArray::fromString('Testing?'), 'Testing?', true],
+            [ByteArray::fromString('Testing?'), 'Testing????', false],
+            [ByteArray::fromString('Testing?'), 'T', true],
+
+            [ByteArray::fromString('Testing?'), 0x54, true],
+            [ByteArray::fromString('Testing?'), 84, true],
+
+            [ByteArray::fromString('🚀🐸'), ByteArray::fromString('🚀🐸'), true],
+            [ByteArray::fromString('🚀🐸'), ByteArray::fromString('🚀'), true],
+            [ByteArray::fromString('🚀🐸'), '🚀', true],
+        ];
+    }
 }
